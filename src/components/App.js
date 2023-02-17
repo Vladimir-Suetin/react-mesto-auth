@@ -9,10 +9,14 @@ import ImagePopup from './ImagePopup';
 import api from '../utils/api';
 import defaultUserData from '../utils/defaultUserData';
 import { useEffect, useState } from 'react';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 import CurrentUserContext from '../context/CurrentUserContext';
 import ConfirmDeletePopup from './ConfirmDeletePopup';
 
 function App() {
+  const navigate = useNavigate();
+
   // Состояние попапов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -146,16 +150,23 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className='page'>
         <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardClick={handleCardClick}
-          onConfirmDeletion={handleConfirmDeletion}
-          isLoading={isLoading}
-        />
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <Main
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onCardClick={handleCardClick}
+                onConfirmDeletion={handleConfirmDeletion}
+                isLoading={isLoading}
+              />
+            }
+          />
+        </Routes>
         <Footer />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
