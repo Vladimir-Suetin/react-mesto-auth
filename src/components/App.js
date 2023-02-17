@@ -13,15 +13,26 @@ import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import CurrentUserContext from '../context/CurrentUserContext';
 import ConfirmDeletePopup from './ConfirmDeletePopup';
+import Login from './Login';
+import Register from './Register';
+import * as userAuth from '../utils/userAuth';
 
 function App() {
   const navigate = useNavigate();
+
+  // Данные пользователя
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({
+    username: '',
+    email: '',
+  });
 
   // Состояние попапов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] = useState(false);
+  const [userMessage, setUserMessage] = useState(null);
 
   // Состояние карточек и данных пользователя
   const [selectedCard, setSelectedCard] = useState({});
@@ -47,6 +58,11 @@ function App() {
         setCards(cardsData);
       })
       .catch((err) => api.logResponseError(err));
+  }, []);
+
+  // Запуск проверки токена при загрузке страницы
+  useEffect(() => {
+    tokenCheck();
   }, []);
 
   // Функция работы с лайками
@@ -115,6 +131,48 @@ function App() {
       .finally(() => setTextSubmitAvatarPopup({ text: 'Создать' }));
   }
 
+  // Функция обработки сообщения пользователю
+  function handleUserMessage(message) {
+    setUserMessage(message);
+  }
+
+  // Функция авторизации
+  function handleLogin({ username, password }) {
+    return userAuth.authorize(username, password).then((data) => {
+      if (data.jwt) {
+        localStorage.setItem('jwt', data.jwt);
+        setLoggedIn(true);
+        setUserData({
+          username: data.user.username,
+          email: data.user.email,
+        });
+        navigate('/');
+      }
+    });
+  }
+
+  // Функция регистрации
+  function handleRegister({ username, password, email }) {
+    return userAuth.register(username, password, email).then(() => {
+      navigate('/login');
+    });
+  }
+
+  // Функция проверки токена
+  function tokenCheck() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      userAuth.getContent(jwt).then((res) => {
+        setLoggedIn(true);
+        setUserData({
+          username: res.username,
+          email: res.email,
+        });
+        navigate('/ducks');
+      });
+    }
+  }
+
   // Функции открытия/закрытия попапов
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -154,18 +212,26 @@ function App() {
           <Route
             path='/'
             element={
-              <Main
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}
-                cards={cards}
-                onCardLike={handleCardLike}
-                onCardClick={handleCardClick}
-                onConfirmDeletion={handleConfirmDeletion}
-                isLoading={isLoading}
+              <ProtectedRoute
+                loggedIn={loggedIn}
+                component={
+                  <Main
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    cards={cards}
+                    onCardLike={handleCardLike}
+                    onCardClick={handleCardClick}
+                    onConfirmDeletion={handleConfirmDeletion}
+                    isLoading={isLoading}
+                  />
+                }
               />
             }
           />
+          <Route path='/sign-in' element={<Login handleUserMessage={handleUserMessage} onLogin={handleLogin} />} />
+          <Route path='/sign-up' element={<Register handleUserMessage={handleUserMessage} />} />
+          <Route path='*' element={loggedIn ? <Navigate to='/' /> : <Navigate to='/sign-in' />} />
         </Routes>
         <Footer />
         <EditAvatarPopup

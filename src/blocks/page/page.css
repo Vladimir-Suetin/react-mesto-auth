@@ -7,9 +7,9 @@
   -moz-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: 1fr auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   padding: 45px 0 60px;
   box-sizing: border-box;
