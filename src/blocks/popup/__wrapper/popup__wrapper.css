@@ -1,0 +1,9 @@
+.popup__wrapper {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  position: relative;
+}

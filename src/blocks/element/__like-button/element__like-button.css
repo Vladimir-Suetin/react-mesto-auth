@@ -1,0 +1,19 @@
+.element__like-button {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0;
+  display: block;
+  min-width: 22px;
+  min-height: 19px;
+  background-image: url(../../../images/heart.svg);
+  background-repeat: no-repeat;
+  background-color: inherit;
+  background-position: center center;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.element__like-button:hover {
+  opacity: 0.5;
+}

@@ -1,0 +1,39 @@
+.popup__close-icon {
+  margin: 0;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: url(../../../images/close-icon.svg);
+  background-repeat: no-repeat;
+  position: absolute;
+  z-index: 3;
+  top: -40px; /* значение складывается из размера кнопки 32px и расстояния от блока 8px */
+  right: -40px;
+  transition: opacity 0.2s ease;
+}
+
+.popup__close-icon:hover {
+  opacity: 0.6;
+}
+
+@media screen and (min-width: 425px) and (max-width: 767px) {
+  .popup__close-icon {
+    width: 20px;
+    height: 20px;
+    top: -36px;
+    right: 0;
+    background-size: contain;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 424px) {
+  .popup__close-icon {
+    width: 20px;
+    height: 20px;
+    top: -36px;
+    right: 0;
+    background-size: contain;
+  }
+}

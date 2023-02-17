@@ -1,0 +1,13 @@
+.element__number-likes {
+  box-sizing: border-box;
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  width: 10px;
+  height: 13px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #000;
+}
