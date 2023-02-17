@@ -158,6 +158,12 @@ function App() {
     });
   }
 
+  // Функция выхода из учетной записи
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setLoggedIn(false);
+  }
+
   // Функция проверки токена
   function tokenCheck() {
     const jwt = localStorage.getItem('jwt');
@@ -224,6 +230,8 @@ function App() {
                     onCardClick={handleCardClick}
                     onConfirmDeletion={handleConfirmDeletion}
                     isLoading={isLoading}
+                    userData={userData}
+                    onLogout={handleLogout}
                   />
                 }
               />

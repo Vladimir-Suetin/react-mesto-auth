@@ -1,7 +1,14 @@
 import React from 'react';
+import Header from './Header';
 
 function Register() {
-  return <p>форма регистрации</p>;
+  return (
+    <>
+      <Header>
+        <p className=''>Войти</p>
+      </Header>
+    </>
+  );
 }
 
 export default Register;
