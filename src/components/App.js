@@ -21,7 +21,7 @@ function App() {
 
   // Данные пользователя
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({ email: '' });
+  const [userEmail, setUserEmail] = useState({ email: '' });
 
   // Состояние попапов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -63,25 +63,26 @@ function App() {
 
   // Функция выхода из учетной записи
   function handleLogout() {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('token');
     setLoggedIn(false);
   }
 
   // Функция авторизации
   function tokenCheck() {
-    const jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('token');
     if (jwt) {
       userAuth.getContent(jwt).then((res) => {
         setLoggedIn(true);
-        setUserData(res.data.email);
-        navigate('/');
+        setUserEmail(res.data.email);
       });
     }
   }
 
-// Функция изменения состояния login
-  function handleLogin() {
-    setLoggedIn(true)
+  // Функция изменения состояния login
+  function handleLogin({ email }) {
+    setLoggedIn(true);
+    setUserEmail(email);
+    navigate('/');
   }
 
   // Функция работы с лайками
@@ -217,19 +218,29 @@ function App() {
             element={
               <ProtectedRoute
                 loggedIn={loggedIn}
-                component={
-                  <Main
-                    onEditProfile={handleEditProfileClick}
-                    onAddPlace={handleAddPlaceClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    cards={cards}
-                    onCardLike={handleCardLike}
-                    onCardClick={handleCardClick}
-                    onConfirmDeletion={handleConfirmDeletion}
-                    isLoading={isLoading}
-                    userData={userData}
-                    onLogout={handleLogout}
-                  />
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onCardClick={handleCardClick}
+                onConfirmDeletion={handleConfirmDeletion}
+                isLoading={isLoading}
+                userEmail={userEmail}
+                onLogout={handleLogout}
+                component={Main
+                  // <Main
+                  //   onEditProfile={handleEditProfileClick}
+                  //   onAddPlace={handleAddPlaceClick}
+                  //   onEditAvatar={handleEditAvatarClick}
+                  //   cards={cards}
+                  //   onCardLike={handleCardLike}
+                  //   onCardClick={handleCardClick}
+                  //   onConfirmDeletion={handleConfirmDeletion}
+                  //   isLoading={isLoading}
+                  //   userEmail={userEmail}
+                  //   onLogout={handleLogout}
+                  // />
                 }
               />
             }

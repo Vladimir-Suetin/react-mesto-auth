@@ -4,7 +4,6 @@ import LoadingSpinner from './LoadingSpinner';
 import CurrentUserContext from '../context/CurrentUserContext';
 
 function Main({
-  children,
   onEditAvatar,
   onEditProfile,
   onAddPlace,

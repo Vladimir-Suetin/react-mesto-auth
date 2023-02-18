@@ -44,7 +44,7 @@ function Register({handleUserMessage}) {
       <main>
         <div className='login'>
           <h2 className='login__title'>Регистрация</h2>
-          <form className='login__form' onSubmit={handleSubmit} noValidate>
+          <form name='registerForm' className='login__form' onSubmit={handleSubmit} noValidate>
             <input
               type='email'
               className='login__input'

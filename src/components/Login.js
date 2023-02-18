@@ -1,13 +1,12 @@
 import React from 'react';
 import Header from './Header';
 import { useForm } from '../hooks/useForm';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as userAuth from '../utils/userAuth';
 
 function Login({ handleUserMessage, onLogin }) {
   const defaultValues = { password: '', email: '' };
   const { values, handleChange, setValues } = useForm(defaultValues);
-  const navigate = useNavigate();
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -17,8 +16,7 @@ function Login({ handleUserMessage, onLogin }) {
       .then((res) => {
         if (res.token) localStorage.setItem('token', res.token);
         setValues(defaultValues);
-        onLogin();
-        navigate('/');
+        onLogin({ email: values.email });
       })
       .catch((err) => {
         console.log(err);
@@ -36,10 +34,10 @@ function Login({ handleUserMessage, onLogin }) {
           Регистрация
         </Link>
       </Header>
-      <div>
+      <main>
         <div className='login'>
           <h2 className='login__title'>Вход</h2>
-          <form className='login__form' onSubmit={handleSubmit} noValidate>
+          <form name='loginForm' className='login__form' onSubmit={handleSubmit} noValidate>
             <input
               type='email'
               className='login__input'
@@ -63,7 +61,7 @@ function Login({ handleUserMessage, onLogin }) {
             </button>
           </form>
         </div>
-      </div>
+      </main>
     </>
   );
 }
