@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as userAuth from '../utils/userAuth';
 
 function Login({ handleUserMessage, onLogin }) {
-  const defaultValues = { email: '', password: '' };
+  const defaultValues = { password: '', email: '' };
   const { values, handleChange, setValues } = useForm(defaultValues);
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ function Login({ handleUserMessage, onLogin }) {
     evt.preventDefault();
 
     userAuth
-      .authorize({ values })
+      .authorize({ password: values.password, email: values.email })
       .then((res) => {
         if (res.token) localStorage.setItem('token', res.token);
         setValues(defaultValues);
@@ -36,7 +36,7 @@ function Login({ handleUserMessage, onLogin }) {
           Регистрация
         </Link>
       </Header>
-      <main>
+      <div>
         <div className='login'>
           <h2 className='login__title'>Вход</h2>
           <form className='login__form' onSubmit={handleSubmit} noValidate>
@@ -63,7 +63,7 @@ function Login({ handleUserMessage, onLogin }) {
             </button>
           </form>
         </div>
-      </main>
+      </div>
     </>
   );
 }

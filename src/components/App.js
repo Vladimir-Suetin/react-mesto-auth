@@ -21,10 +21,7 @@ function App() {
 
   // Данные пользователя
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({
-    username: '',
-    email: '',
-  });
+  const [userData, setUserData] = useState({ email: '' });
 
   // Состояние попапов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -63,6 +60,29 @@ function App() {
   useEffect(() => {
     tokenCheck();
   }, []);
+
+  // Функция выхода из учетной записи
+  function handleLogout() {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+  }
+
+  // Функция авторизации
+  function tokenCheck() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      userAuth.getContent(jwt).then((res) => {
+        setLoggedIn(true);
+        setUserData(res.data.email);
+        navigate('/');
+      });
+    }
+  }
+
+// Функция изменения состояния login
+  function handleLogin() {
+    setLoggedIn(true)
+  }
 
   // Функция работы с лайками
   function handleCardLike(card) {
@@ -135,48 +155,27 @@ function App() {
     setUserMessage(message);
   }
 
-  // Функция авторизации
-  function handleLogin({ username, password }) {
-    return userAuth.authorize(username, password).then((data) => {
-      if (data.jwt) {
-        localStorage.setItem('jwt', data.jwt);
-        setLoggedIn(true);
-        setUserData({
-          username: data.user.username,
-          email: data.user.email,
-        });
-        navigate('/');
-      }
-    });
-  }
+  // // Функция авторизации
+  // function handleLogin(data) {
+  //   return userAuth.authorize({username, password}).then((data) => {
+  //     if (data.jwt) {
+  //       localStorage.setItem('jwt', data.jwt);
+  //       setLoggedIn(true);
+  //       setUserData({
+  //         username: data.user.username,
+  //         email: data.user.email,
+  //       });
+  //       navigate('/');
+  //     }
+  //   });
+  // }
 
-  // Функция регистрации
-  function handleRegister({ username, password, email }) {
-    return userAuth.register(username, password, email).then(() => {
-      navigate('/login');
-    });
-  }
-
-  // Функция выхода из учетной записи
-  function handleLogout() {
-    localStorage.removeItem("token");
-    setLoggedIn(false);
-  }
-
-  // Функция проверки токена
-  function tokenCheck() {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      userAuth.getContent(jwt).then((res) => {
-        setLoggedIn(true);
-        setUserData({
-          username: res.username,
-          email: res.email,
-        });
-        navigate('/ducks');
-      });
-    }
-  }
+  // // Функция регистрации
+  // function handleRegister({ password, email }) {
+  //   return userAuth.register(password, email).then(() => {
+  //     navigate('/login');
+  //   });
+  // }
 
   // Функции открытия/закрытия попапов
   function handleEditAvatarClick() {
