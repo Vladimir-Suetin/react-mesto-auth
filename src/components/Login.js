@@ -32,7 +32,7 @@ function Login({ handleUserMessage, onLogin }) {
   return (
     <>
       <Header>
-        <Link to='/sign-up' className='header__menu-item'>
+        <Link to='/sign-up' className='header__link'>
           Регистрация
         </Link>
       </Header>
