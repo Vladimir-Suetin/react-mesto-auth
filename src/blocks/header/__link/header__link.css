@@ -1,9 +1,12 @@
 .header__link {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
   text-decoration: none;
   color: inherit;
   transition: opacity 0.2s ease;
 }
 
-.login__link:hover {
+.header__link:hover {
   opacity: 0.8;
 }

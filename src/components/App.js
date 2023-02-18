@@ -74,6 +74,7 @@ function App() {
       userAuth.getContent(jwt).then((res) => {
         setLoggedIn(true);
         setUserEmail(res.data.email);
+        navigate('/');
       });
     }
   }
