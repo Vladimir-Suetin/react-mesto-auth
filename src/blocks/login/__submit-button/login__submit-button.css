@@ -1,0 +1,26 @@
+.login__submit-button {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 50px;
+  background-color: #fff;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #000;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.login__submit-button:hover {
+  opacity: 0.8;
+}

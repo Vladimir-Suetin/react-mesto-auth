@@ -3,7 +3,6 @@
   max-width: 880px;
   min-height: 74px;
   display: flex;
-  flex: auto;
   justify-content: flex-start;
   align-items: flex-start;
   margin: 0 auto 40px;
