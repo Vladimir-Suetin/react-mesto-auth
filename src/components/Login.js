@@ -1,9 +1,8 @@
 import React from 'react';
-import Header from './Header';
 import { useForm } from '../hooks/useForm';
 import * as userAuth from '../utils/userAuth';
 
-function Login({ handleUserMessage, onLogin }) {
+function Login({ authSuccess, onLogin }) {
   const defaultValues = { password: '', email: '' };
   const { values, handleChange, setValues } = useForm(defaultValues);
 
@@ -15,46 +14,46 @@ function Login({ handleUserMessage, onLogin }) {
       .then((res) => {
         if (res.token) localStorage.setItem('token', res.token);
         setValues(defaultValues);
-        onLogin({email: values.email});
+        onLogin({ email: values.email });
       })
       .catch((err) => {
         console.log(err);
-        handleUserMessage({
-          text: 'Что-то пошло не так! Попробуйте ещё раз.',
-          isSuccess: false,
+        authSuccess({
+          isOpen: true,
+          authSuccess: false,
         });
       });
   }
 
   return (
-      <main>
-        <div className='login'>
-          <h2 className='login__title'>Вход</h2>
-          <form name='loginForm' className='login__form' onSubmit={handleSubmit} noValidate>
-            <input
-              type='email'
-              className='login__input'
-              placeholder='Email'
-              name='email'
-              value={values.email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type='password'
-              className='login__input'
-              placeholder='Пароль'
-              name='password'
-              value={values.password}
-              onChange={handleChange}
-              required
-            />
-            <button type='submit' className='login__submit-button'>
-              Войти
-            </button>
-          </form>
-        </div>
-      </main>
+    <main>
+      <div className='login'>
+        <h2 className='login__title'>Вход</h2>
+        <form name='loginForm' className='login__form' onSubmit={handleSubmit} noValidate>
+          <input
+            type='email'
+            className='login__input'
+            placeholder='Email'
+            name='email'
+            value={values.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type='password'
+            className='login__input'
+            placeholder='Пароль'
+            name='password'
+            value={values.password}
+            onChange={handleChange}
+            required
+          />
+          <button type='submit' className='login__submit-button'>
+            Войти
+          </button>
+        </form>
+      </div>
+    </main>
   );
 }
 

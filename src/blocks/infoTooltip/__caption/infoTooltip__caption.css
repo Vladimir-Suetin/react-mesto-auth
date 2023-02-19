@@ -1,10 +1,17 @@
 .infoTooltip__caption {
   margin: 0 0 60px;
   padding: 0;
-  width: 358px;
+  width: 280px;
   font-weight: 900;
   font-size: 24px;
   line-height: 29px;
   text-align: center;
   color: #000;
+}
+
+@media screen and (min-width: 320px) and (max-width: 424px) {
+  .infoTooltip__caption {
+    font-size: 20px;
+  line-height: 24px;
+  }
 }

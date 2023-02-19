@@ -30,9 +30,9 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] = useState(false);
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(true);
-  const [isAuthSuccess, setIsAuthSuccess] = useState(true)
-  const [userMessage, setUserMessage] = useState(null);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(null);
+  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
+  // const [userMessage, setUserMessage] = useState(null);
 
   // Состояние карточек и данных пользователя
   const [selectedCard, setSelectedCard] = useState({});
@@ -77,7 +77,7 @@ function App() {
     if (jwt) {
       userAuth.getContent(jwt).then((res) => {
         setLoggedIn(true);
-        setUserEmail({email: res.data.email});
+        setUserEmail({ email: res.data.email });
         navigate('/');
       });
     }
@@ -88,6 +88,12 @@ function App() {
     setLoggedIn(true);
     setUserEmail(email);
     navigate('/');
+  }
+
+  // Функция обработки статуса регистрации и авторизации
+  function handleAuthSuccess({authSuccess, isOpen}) {
+    setIsInfoTooltipPopupOpen(isOpen);
+    setIsAuthSuccess(authSuccess);
   }
 
   // Функция работы с лайками
@@ -156,31 +162,9 @@ function App() {
       .finally(() => setTextSubmitAvatarPopup({ text: 'Создать' }));
   }
 
-  // Функция обработки сообщения пользователю
-  function handleUserMessage(message) {
-    setUserMessage(message);
-  }
-
-  // // Функция авторизации
-  // function handleLogin(data) {
-  //   return userAuth.authorize({username, password}).then((data) => {
-  //     if (data.jwt) {
-  //       localStorage.setItem('jwt', data.jwt);
-  //       setLoggedIn(true);
-  //       setUserData({
-  //         username: data.user.username,
-  //         email: data.user.email,
-  //       });
-  //       navigate('/');
-  //     }
-  //   });
-  // }
-
-  // // Функция регистрации
-  // function handleRegister({ password, email }) {
-  //   return userAuth.register(password, email).then(() => {
-  //     navigate('/login');
-  //   });
+  // // Функция обработки сообщения пользователю
+  // function handleUserMessage(message) {
+  //   setUserMessage(message);
   // }
 
   // Функции открытия/закрытия попапов
@@ -210,6 +194,8 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsConfirmDeletePopupOpen(false);
+    setIsInfoTooltipPopupOpen(false);
+    setIsAuthSuccess(null);
     setSelectedCard({});
     setRemoveCard({});
   }
@@ -250,8 +236,8 @@ function App() {
               />
             }
           />
-          <Route path='/sign-in' element={<Login handleUserMessage={handleUserMessage} onLogin={handleLogin} />} />
-          <Route path='/sign-up' element={<Register handleUserMessage={handleUserMessage} />} />
+          <Route path='/sign-in' element={<Login authSuccess={handleAuthSuccess} onLogin={handleLogin} />} />
+          <Route path='/sign-up' element={<Register authSuccess={handleAuthSuccess}/>} />
           <Route path='*' element={loggedIn ? <Navigate to='/' /> : <Navigate to='/sign-in' />} />
         </Routes>
         <Footer />
