@@ -101,11 +101,33 @@ function App() {
       .then((res) => {
         if (res.token) localStorage.setItem('token', res.token);
         setLoggedIn(true);
-        setUserEmail({email});
+        setUserEmail({ email });
         navigate('/');
       })
       .catch((err) => {
-        console.log({err});
+        console.log({ err });
+        handleAuthSuccess({
+          isOpen: true,
+          authSuccess: false,
+          statusMessage: 'Что-то пошло не так! Попробуйте еще раз.',
+        });
+      });
+  }
+
+  // Функция изменения состояния register
+  function handleRegister({ password, email }) {
+    userAuth
+      .register({ password, email })
+      .then((res) => {
+        handleAuthSuccess({
+          isOpen: true,
+          authSuccess: true,
+          statusMessage: 'Вы успешно зарегистрировались!',
+        });
+        navigate('/sign-in');
+      })
+      .catch((err) => {
+        console.log(err);
         handleAuthSuccess({
           isOpen: true,
           authSuccess: false,
@@ -243,7 +265,7 @@ function App() {
             }
           />
           <Route path='/sign-in' element={<Login onLogin={handleLogin} />} />
-          <Route path='/sign-up' element={<Register authSuccess={handleAuthSuccess} />} />
+          <Route path='/sign-up' element={<Register onRegister={handleRegister} />} />
           <Route path='*' element={loggedIn ? <Navigate to='/' /> : <Navigate to='/sign-in' />} />
         </Routes>
         <Footer />

@@ -1,9 +1,8 @@
 import React from 'react';
 import { useForm } from '../hooks/useForm';
 import { Link, useNavigate } from 'react-router-dom';
-import * as userAuth from '../utils/userAuth';
 
-function Register({ authSuccess }) {
+function Register({ onRegister }) {
   const defaultValues = { password: '', email: '' };
   const { values, handleChange, setValues } = useForm(defaultValues);
   const navigate = useNavigate();
@@ -11,25 +10,8 @@ function Register({ authSuccess }) {
   function handleSubmit(evt) {
     evt.preventDefault();
 
-    userAuth
-      .register({ password: values.password, email: values.email })
-      .then((res) => {
-        setValues(defaultValues);
-        authSuccess({
-          isOpen: true,
-          authSuccess: true,
-          statusMessage: 'Вы успешно зарегистрировались!'
-        });
-        navigate('/sign-in');
-      })
-      .catch((err) => {
-        console.log(err);
-        authSuccess({
-          isOpen: true,
-          authSuccess: false,
-          statusMessage: 'Что-то пошло не так! Попробуйте еще раз.'
-        });
-      });
+    onRegister({ password: values.password, email: values.email });
+    setValues(defaultValues);
   }
 
   return (
