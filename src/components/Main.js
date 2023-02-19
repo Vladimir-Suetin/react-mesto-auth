@@ -2,7 +2,6 @@ import React from 'react';
 import Card from './Card';
 import LoadingSpinner from './LoadingSpinner';
 import CurrentUserContext from '../context/CurrentUserContext';
-import Header from './Header';
 
 function Main({
   onEditAvatar,
@@ -13,19 +12,9 @@ function Main({
   onCardLike,
   isLoading,
   onConfirmDeletion,
-  userEmail,
-  onLogout,
 }) {
   const userData = React.useContext(CurrentUserContext);
   return (
-    <>
-      <Header>
-          <p className='header__email'>{userEmail}</p>
-          <button href='#' className='header__button-logout' onClick={onLogout}>
-            Выйти
-          </button>
-      </Header>
-
       <main>
         <section className='profile'>
           <div className='profile__avatar-edit'>
@@ -75,7 +64,6 @@ function Main({
           </ul>
         </section>
       </main>
-    </>
   );
 }
 

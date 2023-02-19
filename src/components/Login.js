@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from './Header';
 import { useForm } from '../hooks/useForm';
-import { Link } from 'react-router-dom';
 import * as userAuth from '../utils/userAuth';
 
 function Login({ handleUserMessage, onLogin }) {
@@ -16,7 +15,7 @@ function Login({ handleUserMessage, onLogin }) {
       .then((res) => {
         if (res.token) localStorage.setItem('token', res.token);
         setValues(defaultValues);
-        onLogin({ email: values.email });
+        onLogin({email: values.email});
       })
       .catch((err) => {
         console.log(err);
@@ -28,12 +27,6 @@ function Login({ handleUserMessage, onLogin }) {
   }
 
   return (
-    <>
-      <Header>
-        <Link to='/sign-up' className='header__link'>
-          Регистрация
-        </Link>
-      </Header>
       <main>
         <div className='login'>
           <h2 className='login__title'>Вход</h2>
@@ -62,7 +55,6 @@ function Login({ handleUserMessage, onLogin }) {
           </form>
         </div>
       </main>
-    </>
   );
 }
 

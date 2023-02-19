@@ -15,6 +15,7 @@ import ConfirmDeletePopup from './ConfirmDeletePopup';
 import Login from './Login';
 import Register from './Register';
 import * as userAuth from '../utils/userAuth';
+import Header from './Header';
 
 function App() {
   const navigate = useNavigate();
@@ -73,14 +74,14 @@ function App() {
     if (jwt) {
       userAuth.getContent(jwt).then((res) => {
         setLoggedIn(true);
-        setUserEmail(res.data.email);
+        setUserEmail({email: res.data.email});
         navigate('/');
       });
     }
   }
 
   // Функция изменения состояния login
-  function handleLogin({ email }) {
+  function handleLogin(email) {
     setLoggedIn(true);
     setUserEmail(email);
     navigate('/');
@@ -213,6 +214,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='page'>
+        <Header userEmail={userEmail} onLogout={handleLogout} />
         <Routes>
           <Route
             path='/'
@@ -227,9 +229,8 @@ function App() {
                 onCardClick={handleCardClick}
                 onConfirmDeletion={handleConfirmDeletion}
                 isLoading={isLoading}
-                userEmail={userEmail}
-                onLogout={handleLogout}
-                component={Main
+                component={
+                  Main
                   // <Main
                   //   onEditProfile={handleEditProfileClick}
                   //   onAddPlace={handleAddPlaceClick}
