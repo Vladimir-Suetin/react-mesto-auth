@@ -14,6 +14,7 @@ import CurrentUserContext from '../context/CurrentUserContext';
 import ConfirmDeletePopup from './ConfirmDeletePopup';
 import Login from './Login';
 import Register from './Register';
+import InfoTooltip from './InfoTooltip';
 import * as userAuth from '../utils/userAuth';
 import Header from './Header';
 
@@ -29,6 +30,8 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] = useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(true);
+  const [isAuthSuccess, setIsAuthSuccess] = useState(true)
   const [userMessage, setUserMessage] = useState(null);
 
   // Состояние карточек и данных пользователя
@@ -271,6 +274,7 @@ function App() {
           submitButtonState={textSubmitAddPlacePopup}
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        <InfoTooltip isOpen={isInfoTooltipPopupOpen} onClose={closeAllPopups} isSuccess={isAuthSuccess} />
         <ConfirmDeletePopup
           removeCard={removeCard}
           isOpen={isConfirmDeletePopupOpen}
