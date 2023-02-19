@@ -30,9 +30,11 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] = useState(false);
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(null);
-  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
-  // const [userMessage, setUserMessage] = useState(null);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+  const [isAuthSuccess, setIsAuthSuccess] = useState(null);
+
+  // Состояние сообщения о статусе авторизации и регистрации
+  const [userAuthMessage, setUserAuthMessage] = useState(null);
 
   // Состояние карточек и данных пользователя
   const [selectedCard, setSelectedCard] = useState({});
@@ -58,7 +60,7 @@ function App() {
         setCards(cardsData);
       })
       .catch((err) => api.logResponseError(err));
-  }, []);
+  }, [loggedIn]);
 
   // Запуск проверки токена при загрузке страницы
   useEffect(() => {
@@ -75,11 +77,20 @@ function App() {
   function tokenCheck() {
     const jwt = localStorage.getItem('token');
     if (jwt) {
-      userAuth.getContent(jwt).then((res) => {
-        setLoggedIn(true);
-        setUserEmail({ email: res.data.email });
-        navigate('/');
-      });
+      userAuth
+        .getContent(jwt)
+        .then((res) => {
+          setLoggedIn(true);
+          setUserEmail({ email: res.data.email });
+          navigate('/');
+        })
+        .catch((err) => {
+          console.log(err);
+          handleAuthSuccess({
+            isOpen: true,
+            authSuccess: false,
+          });
+        });
     }
   }
 
@@ -91,9 +102,10 @@ function App() {
   }
 
   // Функция обработки статуса регистрации и авторизации
-  function handleAuthSuccess({ authSuccess, isOpen }) {
+  function handleAuthSuccess({ authSuccess, isOpen, statusMessage }) {
     setIsInfoTooltipPopupOpen(isOpen);
     setIsAuthSuccess(authSuccess);
+    setUserAuthMessage(statusMessage)
   }
 
   // Функция работы с лайками
@@ -241,7 +253,7 @@ function App() {
           submitButtonState={textSubmitAddPlacePopup}
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        <InfoTooltip isOpen={isInfoTooltipPopupOpen} onClose={closeAllPopups} isSuccess={isAuthSuccess} />
+        <InfoTooltip isOpen={isInfoTooltipPopupOpen} onClose={closeAllPopups} isSuccess={isAuthSuccess} userMessage={userAuthMessage}/>
         <ConfirmDeletePopup
           removeCard={removeCard}
           isOpen={isConfirmDeletePopupOpen}

@@ -18,6 +18,7 @@ function Register({ authSuccess }) {
         authSuccess({
           isOpen: true,
           authSuccess: true,
+          statusMessage: 'Вы успешно зарегистрировались!'
         });
         navigate('/sign-in');
       })
@@ -26,6 +27,7 @@ function Register({ authSuccess }) {
         authSuccess({
           isOpen: true,
           authSuccess: false,
+          statusMessage: 'Что-то пошло не так! Попробуйте еще раз.'
         });
       });
   }

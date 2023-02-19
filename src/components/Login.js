@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from '../hooks/useForm';
 import * as userAuth from '../utils/userAuth';
 
-function Login({ authSuccess, onLogin }) {
+function Login({ authSuccess, onLogin}) {
   const defaultValues = { password: '', email: '' };
   const { values, handleChange, setValues } = useForm(defaultValues);
 
@@ -21,6 +21,7 @@ function Login({ authSuccess, onLogin }) {
         authSuccess({
           isOpen: true,
           authSuccess: false,
+          statusMessage: 'Что-то пошло не так! Попробуйте еще раз.'
         });
       });
   }
