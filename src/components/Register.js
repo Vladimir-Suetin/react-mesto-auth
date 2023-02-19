@@ -22,7 +22,7 @@ function Register({ authSuccess }) {
         navigate('/sign-in');
       })
       .catch((err) => {
-        console.log({ err });
+        console.log(err);
         authSuccess({
           isOpen: true,
           authSuccess: false,

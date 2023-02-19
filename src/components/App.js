@@ -91,7 +91,7 @@ function App() {
   }
 
   // Функция обработки статуса регистрации и авторизации
-  function handleAuthSuccess({authSuccess, isOpen}) {
+  function handleAuthSuccess({ authSuccess, isOpen }) {
     setIsInfoTooltipPopupOpen(isOpen);
     setIsAuthSuccess(authSuccess);
   }
@@ -162,11 +162,6 @@ function App() {
       .finally(() => setTextSubmitAvatarPopup({ text: 'Создать' }));
   }
 
-  // // Функция обработки сообщения пользователю
-  // function handleUserMessage(message) {
-  //   setUserMessage(message);
-  // }
-
   // Функции открытия/закрытия попапов
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -218,26 +213,12 @@ function App() {
                 onCardClick={handleCardClick}
                 onConfirmDeletion={handleConfirmDeletion}
                 isLoading={isLoading}
-                component={
-                  Main
-                  // <Main
-                  //   onEditProfile={handleEditProfileClick}
-                  //   onAddPlace={handleAddPlaceClick}
-                  //   onEditAvatar={handleEditAvatarClick}
-                  //   cards={cards}
-                  //   onCardLike={handleCardLike}
-                  //   onCardClick={handleCardClick}
-                  //   onConfirmDeletion={handleConfirmDeletion}
-                  //   isLoading={isLoading}
-                  //   userEmail={userEmail}
-                  //   onLogout={handleLogout}
-                  // />
-                }
+                component={Main}
               />
             }
           />
           <Route path='/sign-in' element={<Login authSuccess={handleAuthSuccess} onLogin={handleLogin} />} />
-          <Route path='/sign-up' element={<Register authSuccess={handleAuthSuccess}/>} />
+          <Route path='/sign-up' element={<Register authSuccess={handleAuthSuccess} />} />
           <Route path='*' element={loggedIn ? <Navigate to='/' /> : <Navigate to='/sign-in' />} />
         </Routes>
         <Footer />
