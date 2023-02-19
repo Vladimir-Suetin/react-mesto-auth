@@ -2,6 +2,8 @@ import React from 'react';
 
 function PopupWithForm({ title, name, children, isOpen, onClose, onSubmit, submitButtonState }) {
   React.useEffect(() => {
+    if (!isOpen) return; // снимает обработчик если popup закрыт
+
     function handleEscapeKey(evt) {
       if (evt.key === 'Escape') {
         onClose();
@@ -10,7 +12,7 @@ function PopupWithForm({ title, name, children, isOpen, onClose, onSubmit, submi
 
     document.addEventListener('keydown', handleEscapeKey);
     return () => document.removeEventListener('keydown', handleEscapeKey);
-  }, [onClose]);
+  }, [isOpen]);
 
   function handleOverlayClick(evt) {
     if (evt.target === evt.currentTarget) {

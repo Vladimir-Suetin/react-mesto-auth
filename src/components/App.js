@@ -95,17 +95,30 @@ function App() {
   }
 
   // Функция изменения состояния login
-  function handleLogin(email) {
-    setLoggedIn(true);
-    setUserEmail(email);
-    navigate('/');
+  function handleLogin({ password, email }) {
+    userAuth
+      .authorize({ password, email })
+      .then((res) => {
+        if (res.token) localStorage.setItem('token', res.token);
+        setLoggedIn(true);
+        setUserEmail({email});
+        navigate('/');
+      })
+      .catch((err) => {
+        console.log({err});
+        handleAuthSuccess({
+          isOpen: true,
+          authSuccess: false,
+          statusMessage: 'Что-то пошло не так! Попробуйте еще раз.',
+        });
+      });
   }
 
   // Функция обработки статуса регистрации и авторизации
   function handleAuthSuccess({ authSuccess, isOpen, statusMessage }) {
     setIsInfoTooltipPopupOpen(isOpen);
     setIsAuthSuccess(authSuccess);
-    setUserAuthMessage(statusMessage)
+    setUserAuthMessage(statusMessage);
   }
 
   // Функция работы с лайками
@@ -229,7 +242,7 @@ function App() {
               />
             }
           />
-          <Route path='/sign-in' element={<Login authSuccess={handleAuthSuccess} onLogin={handleLogin} />} />
+          <Route path='/sign-in' element={<Login onLogin={handleLogin} />} />
           <Route path='/sign-up' element={<Register authSuccess={handleAuthSuccess} />} />
           <Route path='*' element={loggedIn ? <Navigate to='/' /> : <Navigate to='/sign-in' />} />
         </Routes>
@@ -253,7 +266,12 @@ function App() {
           submitButtonState={textSubmitAddPlacePopup}
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        <InfoTooltip isOpen={isInfoTooltipPopupOpen} onClose={closeAllPopups} isSuccess={isAuthSuccess} userMessage={userAuthMessage}/>
+        <InfoTooltip
+          isOpen={isInfoTooltipPopupOpen}
+          onClose={closeAllPopups}
+          isSuccess={isAuthSuccess}
+          userMessage={userAuthMessage}
+        />
         <ConfirmDeletePopup
           removeCard={removeCard}
           isOpen={isConfirmDeletePopupOpen}
