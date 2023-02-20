@@ -53,6 +53,8 @@ function App() {
 
   // Получение данных пользователя и карточек
   useEffect(() => {
+    if (!loggedIn) return; // снимет обработчик если пользователь не авторизован
+
     Promise.all([api.getUserInfo(), api.getCards()])
       .then(([userData, cardsData]) => {
         setCurrentUser(userData);
